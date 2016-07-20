@@ -12,7 +12,7 @@ public class DataBase extends SQLiteOpenHelper {
     public static final String DB_NAME="baby_db";
     public static final String TAG="db_info";
     public static final int DB_VERSION=1;
-    SQLiteDatabase database;
+   static SQLiteDatabase database;
 
 
 
@@ -59,7 +59,7 @@ updateMyDataBase(sqLiteDatabase,0,DB_VERSION);
         }
     }
 
-    public void addBabyState (String name, long date, float weight, float height ){
+    public static void addBabyState (String name, long date, float weight, float height ){
         ContentValues contentValues=new ContentValues();
         contentValues.put(DBNamespace.TABLE_BABY_NAME, name);
         contentValues.put(DBNamespace.TABLE_BABY_DATE, date);
@@ -68,20 +68,20 @@ updateMyDataBase(sqLiteDatabase,0,DB_VERSION);
         database.insert(DBNamespace.TABLE_BABY, null, contentValues);
     }
 
-    public void addBabyInfo(String name, long birth){
+    public static void addBabyInfo(String name, long birth){
         ContentValues contentValues=new ContentValues();
         contentValues.put(DBNamespace.TABLE_BABY_INFO_NAME, name);
         contentValues.put(DBNamespace.TABLE_BABY_INFO_BIRTH, birth);
         database.insert(DBNamespace.TABLE_BABY_INFO, null, contentValues);
     }
 
-    public void setUserName(String name){
+    public static void setUserName(String name){
         ContentValues contentValues=new ContentValues();
         contentValues.put(DBNamespace.TABLE_USER_NAME, name);
         database.update(DBNamespace.TABLE_USER, contentValues, null,null);
     }
 
-    public void setUserPicId (int picId){
+    public static void setUserPicId (int picId){
         ContentValues contentValues=new ContentValues();
         contentValues.put(DBNamespace.TABLE_USER_PIC_ID, picId);
         database.update(DBNamespace.TABLE_USER, contentValues, null,null);
