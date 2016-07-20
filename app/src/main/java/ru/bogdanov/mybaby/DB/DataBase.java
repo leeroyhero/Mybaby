@@ -35,27 +35,55 @@ updateMyDataBase(sqLiteDatabase,0,DB_VERSION);
         if (oldVersion==0){
             db.execSQL("CREATE TABLE "+DBNamespace.TABLE_USER+
             " (_id INTEGER PRIMARY KEY AUTOINCREMENT, "+
-                    DBNamespace.TABLE_USER_NAME+" TEXT);"
+                    DBNamespace.TABLE_USER_NAME+" TEXT, "+
+                    DBNamespace.TABLE_USER_PIC_ID+" NUMERIC);"
             );
             ContentValues contentValues=new ContentValues();
             contentValues.put(DBNamespace.TABLE_USER_NAME, "User");
+            contentValues.put(DBNamespace.TABLE_USER_PIC_ID, 1);
             db.insert(DBNamespace.TABLE_USER, null, contentValues);
+
             db.execSQL("CREATE TABLE "+DBNamespace.TABLE_BABY+
                     " (_id INTEGER PRIMARY KEY AUTOINCREMENT, "+
                     DBNamespace.TABLE_BABY_NAME+" TEXT, "+
-                    DBNamespace.TABLE_BABY_BIRTH+" NUMERIC, "+
                     DBNamespace.TABLE_BABY_DATE+" NUMERIC, "+
                     DBNamespace.TABLE_BABY_WEIGHT+" REAL, "+
                     DBNamespace.TABLE_BABY_HEIGHT+" REAL);"
             );
+
+            db.execSQL("CREATE TABLE "+DBNamespace.TABLE_BABY_INFO+
+                    " (_id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+                    DBNamespace.TABLE_BABY_INFO_NAME+" TEXT, "+
+                    DBNamespace.TABLE_BABY_INFO_BIRTH+" NUMERIC);"
+            );
         }
     }
 
+    public void addBabyState (String name, long date, float weight, float height ){
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(DBNamespace.TABLE_BABY_NAME, name);
+        contentValues.put(DBNamespace.TABLE_BABY_DATE, date);
+        contentValues.put(DBNamespace.TABLE_BABY_WEIGHT, weight);
+        contentValues.put(DBNamespace.TABLE_BABY_HEIGHT, height);
+        database.insert(DBNamespace.TABLE_BABY, null, contentValues);
+    }
 
+    public void addBabyInfo(String name, long birth){
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(DBNamespace.TABLE_BABY_INFO_NAME, name);
+        contentValues.put(DBNamespace.TABLE_BABY_INFO_BIRTH, birth);
+        database.insert(DBNamespace.TABLE_BABY_INFO, null, contentValues);
+    }
 
     public void setUserName(String name){
         ContentValues contentValues=new ContentValues();
         contentValues.put(DBNamespace.TABLE_USER_NAME, name);
+        database.update(DBNamespace.TABLE_USER, contentValues, null,null);
+    }
+
+    public void setUserPicId (int picId){
+        ContentValues contentValues=new ContentValues();
+        contentValues.put(DBNamespace.TABLE_USER_PIC_ID, picId);
         database.update(DBNamespace.TABLE_USER, contentValues, null,null);
     }
 }
