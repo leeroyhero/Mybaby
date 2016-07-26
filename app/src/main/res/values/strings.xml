@@ -6,8 +6,20 @@
 
     <string name="action_settings">Settings</string>
 
-   <string name="type_your_name_textview">Представьтесь, пожалуйста</string>
-   <string name="your_name">Ваше имя</string>
-   <string name="next">Далее</string>
-   <string name="not_enterred_name">Вы не ввели имя</string>
+    <string name="type_your_name_textview">Представьтесь, пожалуйста</string>
+    <string name="your_name">Ваше имя</string>
+    <string name="next">Далее</string>
+    <string name="not_enterred_name">Вы не ввели имя</string>
+
+    <string name="hello">Здравствуйте!</string>
+    <string name="type_baby_name">Введите имя малыша</string>
+    <string name="baby_name">Имя малыша</string>
+    <string name="baby_birth">День рождение малыша</string>
+
+    <string name="name_empty">Введите имя</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>

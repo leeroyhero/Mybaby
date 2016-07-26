@@ -1,8 +1,9 @@
 package ru.bogdanov.mybaby;
 
-import android.support.v4.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -14,7 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import ru.bogdanov.mybaby.DB.DataBase;
-import ru.bogdanov.mybaby.Fragments.UserNameEdit;
+import ru.bogdanov.mybaby.FirstStart.FirstActivity;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -37,7 +38,8 @@ public class MainActivity extends AppCompatActivity
 
         DataBase dataBase=new DataBase(this);
 
-        startFragment(new UserNameEdit());
+        Intent intent=new Intent(this, FirstActivity.class);
+        startActivity(intent);
     }
 
     @Override
