@@ -14,11 +14,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import ru.bogdanov.mybaby.DB.DBNamespace;
 import ru.bogdanov.mybaby.DB.DataBase;
 import ru.bogdanov.mybaby.FirstStart.FirstActivity;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    DataBase dataBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +38,17 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        DataBase dataBase=new DataBase(this);
+        dataBase=new DataBase(this);
+        whenStarted();
 
+    }
+
+    private void whenStarted() {
+    if (DBNamespace.DEFAULT_USER_NAME.equals(dataBase.getUserName())){
         Intent intent=new Intent(this, FirstActivity.class);
         startActivity(intent);
+        finish();
+    }
     }
 
     @Override

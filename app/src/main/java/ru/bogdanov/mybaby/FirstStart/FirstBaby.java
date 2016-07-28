@@ -2,8 +2,11 @@ package ru.bogdanov.mybaby.FirstStart;
 
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,8 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import ru.bogdanov.mybaby.DB.DataBase;
+import ru.bogdanov.mybaby.MainActivity;
 import ru.bogdanov.mybaby.R;
 
 /**
@@ -44,12 +49,13 @@ Button buttonDate;
         super.onStart();
 
         buttonDate=(Button) getActivity().findViewById(R.id.buttonDateBirth);
-        buttonNext=(Button) getActivity().findViewById(R.id.buttonNext);
+        buttonNext=(Button) getActivity().findViewById(R.id.buttonBabyNext);
         buttonNext.setOnClickListener(this);
         buttonDate.setOnClickListener(this);
         editTextName=(EditText) getActivity().findViewById(R.id.editTextBabyName);
         calendar=Calendar.getInstance();
         dateFormat=new SimpleDateFormat("dd.MM.yy");
+        buttonDate.setText(dateFormat.format(calendar.getTime()));
     }
 
     @Override
@@ -73,19 +79,26 @@ Button buttonDate;
             FirstStorage.baby_name=str;
             FirstStorage.baby_birth=calendar.getTimeInMillis();
 
-            Toast.makeText(getActivity(),
-                    FirstStorage.user_name+" "+FirstStorage.baby_name+" "+FirstStorage.baby_birth,
-                    Toast.LENGTH_LONG).show();
+            setFragment(new FirstCheck());
         }
     }
+
+    public void setFragment(Fragment fragment){
+        FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.contentLayoutFirst,fragment);
+        fragmentTransaction.commit();
+    }
+
+
 
     private void datePick() {
         new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
                 calendar.set(i,i1,i2);
-                buttonDate.setText(dateFormat.format(calendar));
+                buttonDate.setText(dateFormat.format(calendar.getTime()));
             }
-        },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+        },calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
     }
 }

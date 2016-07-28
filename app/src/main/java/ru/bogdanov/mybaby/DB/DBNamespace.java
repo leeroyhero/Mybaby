@@ -9,6 +9,7 @@ public class DBNamespace implements BaseColumns {
     public static final String TABLE_USER="user";
     public static final String TABLE_USER_NAME="name";
     public static final String TABLE_USER_PIC_ID="pic_id";
+    public static final String DEFAULT_USER_NAME="123hFjds87";
 
     public static final String TABLE_BABY="baby";
     public static final String TABLE_BABY_NAME="name";

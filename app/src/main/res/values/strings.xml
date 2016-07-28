@@ -20,6 +20,11 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="check_data">Проверьте данные</string>
+    <string name="check_you_name">Ваше имя:</string>
+    <string name="check_baby_name">Имя малыша:</string>
+    <string name="check_baby_birth">День рождения малыша:</string>
+    <string name="back">Назад</string>
 
 
 </resources>
