@@ -1,11 +1,8 @@
 package ru.bogdanov.mybaby;
 
-import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,13 +11,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import ru.bogdanov.mybaby.DB.DBNamespace;
-import ru.bogdanov.mybaby.DB.DataBase;
-import ru.bogdanov.mybaby.FirstStart.FirstActivity;
+import ru.bogdanov.mybaby.DBHintsHelper.DBHintsHelper;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    DataBase dataBase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,17 +34,10 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        dataBase=new DataBase(this);
-        whenStarted();
+        DBHintsHelper dbHintsHelper=new DBHintsHelper(this);
+        SQLiteDatabase sqLiteDatabase=dbHintsHelper.getReadableDatabase();
 
-    }
 
-    private void whenStarted() {
-    if (DBNamespace.DEFAULT_USER_NAME.equals(dataBase.getUserName())){
-        Intent intent=new Intent(this, FirstActivity.class);
-        startActivity(intent);
-        finish();
-    }
     }
 
     @Override
@@ -108,10 +97,4 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void startFragment(Fragment fragment){
-        FragmentManager fragmentManager=getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.content_fragment_layout,fragment);
-        fragmentTransaction.commit();
-    }
 }
