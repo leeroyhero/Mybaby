@@ -1,8 +1,10 @@
 package ru.bogdanov.mybaby;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -11,7 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import ru.bogdanov.mybaby.DBHintsHelper.DBHintsHelper;
+import ru.bogdanov.mybaby.HintFragments.HeaderFragment;
 
 
 public class MainActivity extends AppCompatActivity
@@ -34,10 +36,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        DBHintsHelper dbHintsHelper=new DBHintsHelper(this);
-        SQLiteDatabase sqLiteDatabase=dbHintsHelper.getReadableDatabase();
-
-
+        startFragment(new HeaderFragment());
     }
 
     @Override
@@ -95,6 +94,13 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void startFragment(Fragment fragment){
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.content_fragment_layout,fragment);
+        fragmentTransaction.commit();
     }
 
 }
