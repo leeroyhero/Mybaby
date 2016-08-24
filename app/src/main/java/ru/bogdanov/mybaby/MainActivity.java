@@ -13,12 +13,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import ru.bogdanov.mybaby.HintFragments.HeaderFragment;
+import com.google.firebase.analytics.FirebaseAnalytics;
+
+import ru.bogdanov.mybaby.Forum.TopicForumFragment;
 
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,9 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        startFragment(new HeaderFragment());
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        startFragment(new TopicForumFragment());
     }
 
     @Override

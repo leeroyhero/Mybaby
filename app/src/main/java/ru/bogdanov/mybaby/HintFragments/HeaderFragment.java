@@ -13,6 +13,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import ru.bogdanov.mybaby.DBHintsHelper.DBHintsHelper;
+import ru.bogdanov.mybaby.Forum.FireBase;
 import ru.bogdanov.mybaby.R;
 
 /**
@@ -24,6 +25,7 @@ DBHintsHelper dbHintsHelper;
     ArrayList<String> headerList;
     LinearLayout contentLayout;
     View view;
+    FireBase fireBase;
 
     public HeaderFragment() {
         // Required empty public constructor
@@ -46,6 +48,8 @@ DBHintsHelper dbHintsHelper;
         headerList=dbHintsHelper.getHeaders(sqLiteDatabase);
 
         fillHeaderList();
+
+        fireBase=new FireBase();
 
 
     }

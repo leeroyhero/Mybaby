@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "398128926385",
+    "firebase_url": "https://mybaby-8b707.firebaseio.com",
+    "project_id": "mybaby-8b707",
+    "storage_bucket": "mybaby-8b707.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:398128926385:android:e9f06524f1ba0dfe",
+        "android_client_info": {
+          "package_name": "ru.bogdanov.mybaby"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "398128926385-fj3hamk9q04cuufl59kndsvhq8hrud7n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ru.bogdanov.mybaby",
+            "certificate_hash": "72E1BB148AB10F6E6379CF5E4E98CFF9EBC32791"
+          }
+        },
+        {
+          "client_id": "398128926385-mcfmjbe8dne30nehbmh9jdus9ht6nspn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeTRixnhqw1HfGK3UUGxYINUdo5w5MvlI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "398128926385-mcfmjbe8dne30nehbmh9jdus9ht6nspn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
