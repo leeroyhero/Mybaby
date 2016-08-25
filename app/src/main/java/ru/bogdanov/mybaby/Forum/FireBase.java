@@ -37,6 +37,7 @@ public class FireBase {
 
     public void getForumComments(){
         final  ArrayList<ForumComment> listComment=new ArrayList<>();
+
         mDatabase.child("comments").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -66,6 +67,7 @@ public class FireBase {
             }
         });
         ForumStorage.setListComment(listComment);
+
     }
 
     public void getForumTopics(){

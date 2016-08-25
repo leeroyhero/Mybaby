@@ -20,8 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import ru.bogdanov.mybaby.Forum.ForumItems.ForumComment;
 import ru.bogdanov.mybaby.Forum.ForumItems.ForumTopic;
-import ru.bogdanov.mybaby.HintFragments.SubtitleFragment;
 import ru.bogdanov.mybaby.R;
 
 /**
@@ -58,6 +58,7 @@ FireBase fireBase;
         itemCalendar=Calendar.getInstance();
         buttonToppicAdd=(Button) getActivity().findViewById(R.id.buttonTopicAdd);
         buttonToppicAdd.setOnClickListener(this);
+
 
 
     }
@@ -110,6 +111,9 @@ FireBase fireBase;
             fireBase.getForumTopics();
             while (ForumStorage.getListTopic()==null){}
             while (ForumStorage.getListTopic().size()==0){}
+            fireBase.getForumComments();
+            while (ForumStorage.getListComment()==null){}
+            while (ForumStorage.getListComment().size()==0){}
             return null;
         }
 
@@ -121,7 +125,13 @@ FireBase fireBase;
             Log.i("firebase_log",""+listTopic.size());
             if (listTopic!=null)
                 for (ForumTopic forumTopic: listTopic) {
+                    int count=0;
+                    for (ForumComment forumComment:ForumStorage.getListComment())
+                        if (forumTopic.getmDate()==forumComment.getmTopicId()) count++;
+
                     View view=View.inflate(getActivity(),R.layout.topic_item,null);
+                    TextView textViewCount=(TextView) view.findViewById(R.id.textViewCommentCount);
+                    textViewCount.setText(count+"");
                     TextView textviewTopic=(TextView) view.findViewById(R.id.textViewTopic);
                     TextView textviewNickname=(TextView) view.findViewById(R.id.textViewNickNameTopic);
                     TextView textviewDate=(TextView) view.findViewById(R.id.textViewTopicDate);
@@ -138,7 +148,6 @@ FireBase fireBase;
                             boom();
                         }
                     });
-
                     contentLayout.addView(view);
                 }
         }

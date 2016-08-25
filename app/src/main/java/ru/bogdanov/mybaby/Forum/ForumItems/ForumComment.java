@@ -1,5 +1,8 @@
 package ru.bogdanov.mybaby.Forum.ForumItems;
 
+import java.util.Calendar;
+import java.util.Locale;
+
 /**
  * Created by Владимир on 23.08.2016.
  */
@@ -53,8 +56,9 @@ public class ForumComment {
     public ForumComment(){
     }
 
-    public ForumComment(long mTopicId, String mNickName, String mText, long mDate, int mIconId) {
-        this.mDate = mDate;
+    public ForumComment(long mTopicId, String mNickName, String mText, int mIconId) {
+        Calendar calendar=Calendar.getInstance(Locale.ENGLISH);
+        this.mDate = calendar.getTimeInMillis();
         this.mIconId = mIconId;
         this.mNickName = mNickName;
         this.mText = mText;
