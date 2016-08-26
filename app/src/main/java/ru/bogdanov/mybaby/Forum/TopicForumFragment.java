@@ -1,6 +1,7 @@
 package ru.bogdanov.mybaby.Forum;
 
 
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,7 @@ import java.util.Calendar;
 import ru.bogdanov.mybaby.Forum.ForumItems.ForumComment;
 import ru.bogdanov.mybaby.Forum.ForumItems.ForumTopic;
 import ru.bogdanov.mybaby.R;
+import ru.bogdanov.mybaby.SharedPref;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,14 +36,14 @@ FireBase fireBase;
     ArrayList<ForumTopic> listTopic;
     DateFormat dateFormat;
     Calendar itemCalendar;
-    Button buttonToppicAdd;
+    Button buttonToppicAdd, buttonSettings, buttonRefresh;
     AlertDialog alertDialog;
     EditText editTextTopic, editTextText;
+    ProgressBar progressBar;
 
     public TopicForumFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,15 +55,49 @@ FireBase fireBase;
     @Override
     public void onStart() {
         super.onStart();
+        getActivity().setTitle("Форум");
+        progressBar=(ProgressBar) getActivity().findViewById(R.id.progressBar);
         new FillTask().execute();
+        getName();
         contentLayout=(LinearLayout) getActivity().findViewById(R.id.content_fragment_topic_forum);
         dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         itemCalendar=Calendar.getInstance();
         buttonToppicAdd=(Button) getActivity().findViewById(R.id.buttonTopicAdd);
+        buttonSettings=(Button) getActivity().findViewById(R.id.buttonSettings);
+        buttonRefresh=(Button) getActivity().findViewById(R.id.buttonRefresh);
         buttonToppicAdd.setOnClickListener(this);
+        buttonSettings.setOnClickListener(this);
+        buttonRefresh.setOnClickListener(this);
+    }
 
+    private void getName() {
+        ForumStorage.setNickName(new SharedPref(getActivity()).getName());
+        if (ForumStorage.getNickName().equals("User")){
+            newName();
+        }
+    }
 
-
+    private void newName(){
+        View view=View.inflate(getActivity(),R.layout.forum_settings,null);
+        final EditText editText=(EditText) view.findViewById(R.id.editTextForumSettings);
+        new AlertDialog.Builder(getActivity())
+                .setView(view)
+                .setCancelable(false)
+                .setPositiveButton("Принять", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        String text=editText.getText().toString();
+                        text=text.trim();
+                        if (text.isEmpty()) {
+                            Toast.makeText(getActivity(), "Введите имя", Toast.LENGTH_SHORT).show();
+                            getName();
+                        } else {
+                            new SharedPref(getActivity()).saveName(text);
+                            ForumStorage.setNickName(text);
+                        }
+                    }
+                })
+                .show();
     }
 
     @Override
@@ -68,11 +105,15 @@ FireBase fireBase;
         int id=view.getId();
         if (id==R.id.buttonTopicAdd) topicAdd();
         if (id==R.id.buttonNewTopic) newTopic();
+        if (id==R.id.buttonSettings) newName();
+        if (id==R.id.buttonRefresh) new FillTask().execute();
     }
 
     private void newTopic() {
         String topic=editTextTopic.getText().toString();
         String text=editTextText.getText().toString();
+        topic=topic.trim();
+        text=text.trim();
         if (topic.isEmpty())
             Toast.makeText(getActivity(),"Введите заголовок",Toast.LENGTH_SHORT).show();
         else if (text.isEmpty())
@@ -103,8 +144,13 @@ FireBase fireBase;
                 .commit();
     }
 
-
     class FillTask extends AsyncTask<Void,Void,Void>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
+        }
+
         @Override
         protected Void doInBackground(Void... voids) {
             fireBase=new FireBase();
@@ -150,6 +196,7 @@ FireBase fireBase;
                     });
                     contentLayout.addView(view);
                 }
+            progressBar.setVisibility(View.GONE);
         }
     }
 }

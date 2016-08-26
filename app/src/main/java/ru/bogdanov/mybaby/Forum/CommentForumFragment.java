@@ -82,6 +82,7 @@ ForumTopic forumTopic;
         EditText editText=(EditText) getActivity().findViewById(R.id.editTextCommentAdd);
         String text=editText.getText().toString();
         text=text.replaceAll("\n"," ");
+        text=text.trim();
         if (text.isEmpty()) Toast.makeText(getActivity(),"Введите сообщение",Toast.LENGTH_SHORT).show();
         else {
             ForumComment forumComment=new ForumComment(ForumStorage.currentTopicId,ForumStorage.nickName,text, 0);

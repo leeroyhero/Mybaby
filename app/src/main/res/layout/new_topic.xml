@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/editTextNewTopicText"
-            android:hint="Макс. 15 символов"
+            android:hint="Макс. 60 символов"
             android:ems="60"/>
 
         <Button

@@ -42,7 +42,7 @@ DBHintsHelper dbHintsHelper;
     @Override
     public void onStart() {
         super.onStart();
-
+        getActivity().setTitle("Советы");
         dbHintsHelper=new DBHintsHelper(getActivity());
         sqLiteDatabase=dbHintsHelper.getReadableDatabase();
         headerList=dbHintsHelper.getHeaders(sqLiteDatabase);

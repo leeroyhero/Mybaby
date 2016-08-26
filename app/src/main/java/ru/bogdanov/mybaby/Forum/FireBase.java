@@ -35,6 +35,11 @@ public class FireBase {
         Log.i(LOG,"New comment added: "+forumComment.getmText());
     }
 
+    public void sendToMe(String text){
+        mDatabase.child("advice").push().setValue(ForumStorage.getNickName()+": "+text);
+        Log.i(LOG,"New advice: "+text);
+    }
+
     public void getForumComments(){
         final  ArrayList<ForumComment> listComment=new ArrayList<>();
 

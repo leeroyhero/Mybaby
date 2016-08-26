@@ -12,7 +12,7 @@ public class ForumStorage {
    static ArrayList<ForumTopic> listTopic;
    static ArrayList<ForumComment> listComment;
     static long currentTopicId;
-    static String nickName="Чика";
+    static String nickName="User";
     static int iconId=0;
 
     public static int getIconId() {
