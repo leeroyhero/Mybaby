@@ -8,5 +8,7 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="item_height">86dp</dimen>
-
+    <dimen name="textPrimary">24sp</dimen>
+    <dimen name="textSecondary">16sp</dimen>
+<dimen name="radius">3dp</dimen>
 </resources>

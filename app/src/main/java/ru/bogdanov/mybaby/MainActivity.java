@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -47,6 +48,9 @@ public class MainActivity extends AppCompatActivity
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         startFragment(new TopicForumFragment());
+
+        ImageView imageView=(ImageView) findViewById(R.id.imageViewBackground);
+        imageView.setImageResource(R.drawable.gradient);
     }
 
     public void sendToMe(){

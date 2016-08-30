@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,12 +65,14 @@ ForumTopic forumTopic;
         TextView textViewTopText=(TextView) getActivity().findViewById(R.id.textViewTopicText);
         TextView textViewTopTitle=(TextView) getActivity().findViewById(R.id.textViewTopicTitle);
         TextView textViewTopDate=(TextView) getActivity().findViewById(R.id.textViewTopicDate);
+        TextView textViewTopName=(TextView) getActivity().findViewById(R.id.textViewTopicName);
         textViewTopText.setText(forumTopic.getmText());
         Calendar calendar=Calendar.getInstance();
         calendar.setTimeInMillis(forumTopic.getmDate());
         String date=dateFormat.format(calendar.getTime());
         textViewTopDate.setText(date);
-        textViewTopTitle.setText(forumTopic.getmNickname()+": "+forumTopic.getmTopic());
+        textViewTopTitle.setText(forumTopic.getmTopic());
+        textViewTopName.setText(forumTopic.getmNickname());
     }
 
     @Override
@@ -124,7 +127,14 @@ ForumTopic forumTopic;
 
                 contentLL.addView(view);}
             }
-
+            final ScrollView scrollView=(ScrollView) getActivity().findViewById(R.id.scrollViewCommentForum);
+            scrollView.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (scrollView!=null)
+                        scrollView.fullScroll(View.FOCUS_DOWN);
+                }
+            });
         }
     }
 }

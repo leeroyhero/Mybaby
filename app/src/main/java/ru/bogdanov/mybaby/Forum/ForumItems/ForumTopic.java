@@ -12,6 +12,15 @@ public class ForumTopic {
     private String mTopic;
     private long mDate;
     private int mIcon_id;
+    private String mSection;
+
+    public String getmSection() {
+        return mSection;
+    }
+
+    public void setmSection(String mSection) {
+        this.mSection = mSection;
+    }
 
     public long getmDate() {
         return mDate;
@@ -65,7 +74,7 @@ public class ForumTopic {
         this.mTopic = mTopic;
         Calendar calendar=Calendar.getInstance(Locale.ENGLISH);
         this.mDate = calendar.getTimeInMillis();
-
+        this.mSection="common";
 
     }
 }

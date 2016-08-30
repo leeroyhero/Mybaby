@@ -4,11 +4,11 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_forum"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_forum_black_24dp"
             android:title="Форум" />
         <item
             android:id="@+id/nav_hints"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_child_friendly_black_24dp"
             android:title="Советы" />
 
     </group>
@@ -17,7 +17,7 @@
         <menu>
             <item
                 android:id="@+id/nav_send_to_me"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/ic_message_black_24dp"
                 android:title="Написать разработчику" />
         </menu>
     </item>

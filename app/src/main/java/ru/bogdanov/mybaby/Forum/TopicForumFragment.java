@@ -21,6 +21,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 
 import ru.bogdanov.mybaby.Forum.ForumItems.ForumComment;
 import ru.bogdanov.mybaby.Forum.ForumItems.ForumTopic;
@@ -106,7 +107,10 @@ FireBase fireBase;
         if (id==R.id.buttonTopicAdd) topicAdd();
         if (id==R.id.buttonNewTopic) newTopic();
         if (id==R.id.buttonSettings) newName();
-        if (id==R.id.buttonRefresh) new FillTask().execute();
+        if (id==R.id.buttonRefresh) {
+            new FillTask().execute();
+            Toast.makeText(getActivity(),"Страница обновлена",Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void newTopic() {
@@ -168,6 +172,7 @@ FireBase fireBase;
             super.onPostExecute(aVoid);
             contentLayout.removeAllViews();
             listTopic=new ArrayList<>(ForumStorage.getListTopic());
+            Collections.reverse(listTopic);
             Log.i("firebase_log",""+listTopic.size());
             if (listTopic!=null)
                 for (ForumTopic forumTopic: listTopic) {
@@ -180,12 +185,8 @@ FireBase fireBase;
                     textViewCount.setText(count+"");
                     TextView textviewTopic=(TextView) view.findViewById(R.id.textViewTopic);
                     TextView textviewNickname=(TextView) view.findViewById(R.id.textViewNickNameTopic);
-                    TextView textviewDate=(TextView) view.findViewById(R.id.textViewTopicDate);
                     textviewTopic.setText(forumTopic.getmTopic());
                     textviewNickname.setText(forumTopic.getmNickname());
-                    itemCalendar.setTimeInMillis(forumTopic.getmDate());
-                    String s=dateFormat.format(itemCalendar.getTime());
-                    textviewDate.setText(s);
                     final long topicId=forumTopic.getmDate();
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override

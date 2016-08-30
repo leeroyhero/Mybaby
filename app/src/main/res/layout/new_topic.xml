@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <TextView
             android:layout_width="wrap_content"
@@ -17,12 +21,13 @@
             android:id="@+id/textView2" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:hint="Макс. 15 символов"
-            android:ems="15"
-            android:id="@+id/editTextNewTopicTopic" />
+            android:id="@+id/editTextNewTopicTopic"
+            android:maxLength="15"
+            android:gravity="center" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,16 +37,18 @@
             android:id="@+id/textView3" />
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/editTextNewTopicText"
-            android:hint="Макс. 60 символов"
-            android:ems="60"/>
+            android:hint="Макс. 150 символов"
+            android:maxLength="150"
+            android:gravity="center" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Создать"
-            android:id="@+id/buttonNewTopic" />
+            android:id="@+id/buttonNewTopic"
+            android:layout_margin="4dp" />
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>
