@@ -25,13 +25,28 @@ public class FireBase {
         Log.i(LOG,"Firebase started");
     }
 
+    public void deleteComments(){
+        mDatabase.child("comments").removeValue();
+        mDatabase.child("forum").removeValue();
+    }
+
+    public void deletePostAndComments(){
+        long id=ForumStorage.getListTopic().get(0).getmDate();
+        int ic=ForumStorage.getListTopic().get(0).getmIcon_id();
+        mDatabase.child("forum").child(id+" "+ic).removeValue();
+        ArrayList<ForumComment> list=new ArrayList<>(ForumStorage.getListComment());
+        for (ForumComment fc:list) {
+            if (id==fc.getmTopicId()) mDatabase.child("comments").child(fc.getmDate()+" "+fc.getmIconId()).removeValue();
+        }
+    }
+
     public void newForumTopic(ForumTopic forumTopic){
-        mDatabase.child("forum").child(String.valueOf(forumTopic.getmDate()+" "+forumTopic.getmNickname()+" "+forumTopic.getmTopic())).setValue(forumTopic);
+        mDatabase.child("forum").child(String.valueOf(forumTopic.getmDate()+" "+forumTopic.getmIcon_id())).setValue(forumTopic);
         Log.i(LOG,"New topic added: "+forumTopic.getmTopic());
     }
 
     public void newForumComment(ForumComment forumComment){
-        mDatabase.child("comments").child(String.valueOf(forumComment.getmDate()+" "+forumComment.getmNickName())).setValue(forumComment);
+        mDatabase.child("comments").child(String.valueOf(forumComment.getmDate()+" "+forumComment.getmIconId())).setValue(forumComment);
         Log.i(LOG,"New comment added: "+forumComment.getmText());
     }
 

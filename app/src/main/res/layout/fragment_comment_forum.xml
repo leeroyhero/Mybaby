@@ -102,7 +102,7 @@
         android:id="@+id/linearLayout"
         android:elevation="5dp"
         android:gravity="center_vertical|center"
-        android:background="#11ffffff">
+        android:background="#11981c1c">
 
         <EditText
             android:layout_width="wrap_content"

@@ -13,7 +13,8 @@
         android:paddingBottom="4dp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:id="@+id/relativeLayout2">
+        android:id="@+id/relativeLayout2"
+        android:background="@drawable/item_back">
 
         <TextView
             android:layout_width="wrap_content"
@@ -38,9 +39,10 @@
             android:id="@+id/textViewNickNameTopic"
             android:textColor="@color/textSecondary"
             android:textSize="@dimen/textSecondary"
-            android:layout_below="@+id/textViewTopic"
-            android:layout_alignLeft="@+id/textViewTopic"
-            android:layout_alignStart="@+id/textViewTopic" />
+            android:layout_alignParentBottom="true"
+            android:layout_toRightOf="@+id/imageView3"
+            android:layout_toEndOf="@+id/imageView3"
+            android:layout_marginLeft="4dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -51,8 +53,8 @@
             android:textColor="@color/textSecondary"
             android:textSize="@dimen/textSecondary"
             android:layout_alignParentBottom="true"
-            android:layout_alignLeft="@+id/textViewNickNameTopic"
-            android:layout_alignStart="@+id/textViewNickNameTopic" />
+            android:layout_alignLeft="@+id/textViewTopic"
+            android:layout_alignStart="@+id/textViewTopic" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -75,16 +77,6 @@
             android:layout_marginLeft="4dp" />
 
     </RelativeLayout>
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/relativeLayout2"
-        android:layout_centerHorizontal="true"
-        android:background="@color/line"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"></LinearLayout>
 
 
 </RelativeLayout>

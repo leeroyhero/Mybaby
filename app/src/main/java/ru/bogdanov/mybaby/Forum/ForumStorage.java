@@ -15,6 +15,16 @@ public class ForumStorage {
     static String nickName="User";
     static int iconId=0;
 
+    public static int getTopicCursor() {
+        return topicCursor;
+    }
+
+    public static void setTopicCursor(int topicCursor) {
+        ForumStorage.topicCursor = topicCursor;
+    }
+
+    static int topicCursor=0;
+
     public static int getIconId() {
         return iconId;
     }

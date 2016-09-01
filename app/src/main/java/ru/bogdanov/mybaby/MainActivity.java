@@ -50,13 +50,13 @@ public class MainActivity extends AppCompatActivity
         startFragment(new TopicForumFragment());
 
         ImageView imageView=(ImageView) findViewById(R.id.imageViewBackground);
-        imageView.setImageResource(R.drawable.gradient);
+        imageView.setImageResource(R.drawable.gradient1);
     }
 
     public void sendToMe(){
         View view=View.inflate(this,R.layout.send_to_me,null);
         final EditText editTextSendToMe=(EditText) view.findViewById(R.id.editTextSendToMe);
-        new AlertDialog.Builder(this)
+        AlertDialog alertDialog= new AlertDialog.Builder(this)
                 .setView(view)
                 .setPositiveButton("Отправить", new DialogInterface.OnClickListener() {
                     @Override
@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity
                     }
                 })
                 .show();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.gradient1);
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.textPrimary));
     }
 
     @Override

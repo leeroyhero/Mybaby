@@ -15,7 +15,9 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Введите ваше имя"
-            android:id="@+id/textView4" />
+            android:id="@+id/textView4"
+            android:textColor="@color/textPrimary"
+            />
 
         <EditText
             android:layout_width="wrap_content"
@@ -23,7 +25,10 @@
             android:inputType="textPersonName"
             android:hint="Имя"
             android:ems="10"
-            android:id="@+id/editTextForumSettings" />
+            android:id="@+id/editTextForumSettings"
+            android:textColor="@color/textPrimary"
+            android:textColorHint="@color/textPrimary"
+            android:backgroundTint="#ffffff"/>
 
     </LinearLayout>
 </LinearLayout>

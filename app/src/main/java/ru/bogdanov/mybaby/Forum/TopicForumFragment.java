@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +42,7 @@ FireBase fireBase;
     AlertDialog alertDialog;
     EditText editTextTopic, editTextText;
     ProgressBar progressBar;
+    int STEP=40;
 
     public TopicForumFragment() {
         // Required empty public constructor
@@ -58,7 +60,7 @@ FireBase fireBase;
         super.onStart();
         getActivity().setTitle("Форум");
         progressBar=(ProgressBar) getActivity().findViewById(R.id.progressBar);
-        new FillTask().execute();
+       new FillTask().execute();
         getName();
         contentLayout=(LinearLayout) getActivity().findViewById(R.id.content_fragment_topic_forum);
         dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
@@ -81,7 +83,7 @@ FireBase fireBase;
     private void newName(){
         View view=View.inflate(getActivity(),R.layout.forum_settings,null);
         final EditText editText=(EditText) view.findViewById(R.id.editTextForumSettings);
-        new AlertDialog.Builder(getActivity())
+        AlertDialog alertDialog=new AlertDialog.Builder(getActivity())
                 .setView(view)
                 .setCancelable(false)
                 .setPositiveButton("Принять", new DialogInterface.OnClickListener() {
@@ -99,18 +101,35 @@ FireBase fireBase;
                     }
                 })
                 .show();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.gradient1);
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.textPrimary));
     }
 
     @Override
     public void onClick(View view) {
         int id=view.getId();
         if (id==R.id.buttonTopicAdd) topicAdd();
+
         if (id==R.id.buttonNewTopic) newTopic();
         if (id==R.id.buttonSettings) newName();
+
         if (id==R.id.buttonRefresh) {
             new FillTask().execute();
             Toast.makeText(getActivity(),"Страница обновлена",Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void bitch() {
+        FireBase fireBase=new FireBase();
+        for (int i=0;i<1000;i++){
+            ForumTopic forumTopic = new ForumTopic(ForumStorage.getNickName(), "Комментарий "+i*10, "Тема "+i, ForumStorage.getIconId());
+            fireBase.newForumTopic(forumTopic);
+            for (int j=0;j<5;j++){
+                ForumComment forumComment=new ForumComment(forumTopic.getmDate(),ForumStorage.nickName,"Комментарий "+j, 0);
+                fireBase.newForumComment(forumComment);
+            }
+        }
+        new FillTask().execute();
     }
 
     private void newTopic() {
@@ -124,6 +143,7 @@ FireBase fireBase;
             Toast.makeText(getActivity(),"Введите текст",Toast.LENGTH_SHORT).show();
         else {
             ForumTopic forumTopic = new ForumTopic(ForumStorage.getNickName(), text, topic, ForumStorage.getIconId());
+
             fireBase.newForumTopic(forumTopic);
             new FillTask().execute();
             alertDialog.cancel();
@@ -170,12 +190,18 @@ FireBase fireBase;
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            ForumStorage.setTopicCursor(0);
             contentLayout.removeAllViews();
             listTopic=new ArrayList<>(ForumStorage.getListTopic());
             Collections.reverse(listTopic);
             Log.i("firebase_log",""+listTopic.size());
-            if (listTopic!=null)
-                for (ForumTopic forumTopic: listTopic) {
+            int current=ForumStorage.getTopicCursor();
+            int newCursor=current+STEP;
+            if (listTopic!=null){
+            if (listTopic.size()-1<newCursor) newCursor=listTopic.size()-1;
+
+                for (int i=current;i<=newCursor;i++) {
+                    ForumTopic forumTopic=listTopic.get(i);
                     int count=0;
                     for (ForumComment forumComment:ForumStorage.getListComment())
                         if (forumTopic.getmDate()==forumComment.getmTopicId()) count++;
@@ -197,7 +223,93 @@ FireBase fireBase;
                     });
                     contentLayout.addView(view);
                 }
+                if (getActivity()!=null)
+                    if (listTopic.size()-current-STEP>0)
+                if (current+STEP!=listTopic.size()){
+                    View view=View.inflate(getActivity(),R.layout.button_more_topic,null);
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ForumStorage.setTopicCursor(ForumStorage.getTopicCursor()+STEP);
+                            new FillTask1().execute();
+                        }
+                    });
+                    contentLayout.addView(view);
+                }
+
             progressBar.setVisibility(View.GONE);
+        }}
+    }
+
+    class FillTask1 extends AsyncTask<Void,Void,Void>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressBar.setVisibility(View.VISIBLE);
         }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            contentLayout.removeAllViews();
+            listTopic=new ArrayList<>(ForumStorage.getListTopic());
+            Collections.reverse(listTopic);
+            Log.i("firebase_log",""+listTopic.size());
+            int current=ForumStorage.getTopicCursor();
+            int newCursor=current+STEP;
+            if (listTopic!=null){
+                if (listTopic.size()-1<newCursor) newCursor=listTopic.size()-1;
+
+                for (int i=current;i<=newCursor;i++) {
+                    ForumTopic forumTopic=listTopic.get(i);
+                    int count=0;
+                    for (ForumComment forumComment:ForumStorage.getListComment())
+                        if (forumTopic.getmDate()==forumComment.getmTopicId()) count++;
+
+                    View view=View.inflate(getActivity(),R.layout.topic_item,null);
+                    TextView textViewCount=(TextView) view.findViewById(R.id.textViewCommentCount);
+                    textViewCount.setText(count+"");
+                    TextView textviewTopic=(TextView) view.findViewById(R.id.textViewTopic);
+                    TextView textviewNickname=(TextView) view.findViewById(R.id.textViewNickNameTopic);
+                    textviewTopic.setText(forumTopic.getmTopic());
+                    textviewNickname.setText(forumTopic.getmNickname());
+                    final long topicId=forumTopic.getmDate();
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ForumStorage.setCurrentTopicId(topicId);
+                            boom();
+                        }
+                    });
+                    contentLayout.addView(view);
+                }
+                if (listTopic.size()-current-STEP>0)
+                if (current+STEP!=listTopic.size()){
+                    View view=View.inflate(getActivity(),R.layout.button_more_topic,null);
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            ForumStorage.setTopicCursor(ForumStorage.getTopicCursor()+STEP);
+                            new FillTask1().execute();
+                        }
+                    });
+                    contentLayout.addView(view);
+                }
+                progressBar.setVisibility(View.GONE);
+
+                final ScrollView scrollView=(ScrollView) getActivity().findViewById(R.id.scrollView4);
+                scrollView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (scrollView!=null)
+                            scrollView.fullScroll(View.FOCUS_UP);
+                    }
+                });
+            }}
     }
 }
