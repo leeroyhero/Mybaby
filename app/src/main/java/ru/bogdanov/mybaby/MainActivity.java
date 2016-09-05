@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import ru.bogdanov.mybaby.Chat.Chat;
 import ru.bogdanov.mybaby.Forum.FireBase;
 import ru.bogdanov.mybaby.Forum.TopicForumFragment;
 import ru.bogdanov.mybaby.HintFragments.HeaderFragment;
@@ -99,6 +100,8 @@ public class MainActivity extends AppCompatActivity
             startFragment(new TopicForumFragment());
         } else if (id == R.id.nav_hints) {
             startFragment(new HeaderFragment());
+        }else if (id == R.id.nav_chat) {
+            startFragment(new Chat());
         } else if (id == R.id.nav_send_to_me) {
             sendToMe();
         }
