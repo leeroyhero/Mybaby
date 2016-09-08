@@ -25,9 +25,15 @@ public class FireBase {
         Log.i(LOG,"Firebase started");
     }
 
-    public void deleteComments(){
-        mDatabase.child("comments").removeValue();
-        mDatabase.child("forum").removeValue();
+    public void deleteComments(String s){
+        mDatabase.child("forum").child(s).removeValue();
+        for (ForumComment fc:ForumStorage.getListComment()) {
+            if (s.equals(fc.getmTopicId())) {
+                int position=ForumStorage.getListComment().indexOf(fc);
+                mDatabase.child("comments").child(ForumStorage.getListKeysComment().get(position)).removeValue();
+            }
+        }
+
     }
 
     public void deletePostAndComments(){
@@ -41,12 +47,12 @@ public class FireBase {
     }
 
     public void newForumTopic(ForumTopic forumTopic){
-        mDatabase.child("forum").child(String.valueOf(forumTopic.getmDate()+" "+forumTopic.getmIcon_id())).setValue(forumTopic);
+        mDatabase.child("forum").push().setValue(forumTopic);
         Log.i(LOG,"New topic added: "+forumTopic.getmTopic());
     }
 
     public void newForumComment(ForumComment forumComment){
-        mDatabase.child("comments").child(String.valueOf(forumComment.getmDate()+" "+forumComment.getmIconId())).setValue(forumComment);
+        mDatabase.child("comments").push().setValue(forumComment);
         Log.i(LOG,"New comment added: "+forumComment.getmText());
     }
 
@@ -57,6 +63,7 @@ public class FireBase {
 
     public void getForumComments(){
         final  ArrayList<ForumComment> listComment=new ArrayList<>();
+        final  ArrayList<String> listKeysComment=new ArrayList<>();
 
         mDatabase.child("comments").addChildEventListener(new ChildEventListener() {
             @Override
@@ -64,6 +71,7 @@ public class FireBase {
                 ForumComment forumComment=dataSnapshot.getValue(ForumComment.class);
                 Log.i(LOG,forumComment.getmNickName()+ " "+forumComment.getmDate()+" "+forumComment.getmText());
                 listComment.add(forumComment);
+                listKeysComment.add(dataSnapshot.getKey());
             }
 
             @Override
@@ -87,6 +95,7 @@ public class FireBase {
             }
         });
         ForumStorage.setListComment(listComment);
+        ForumStorage.setListKeysComment(listKeysComment);
 
     }
 

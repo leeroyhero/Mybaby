@@ -11,6 +11,17 @@ import ru.bogdanov.mybaby.Forum.ForumItems.ForumTopic;
 public class ForumStorage {
    static ArrayList<ForumTopic> listTopic;
    static ArrayList<ForumComment> listComment;
+
+
+    public static ArrayList<String> getListKeysComment() {
+        return listKeysComment;
+    }
+
+    public static void setListKeysComment(ArrayList<String> listKeysComment) {
+        ForumStorage.listKeysComment = listKeysComment;
+    }
+
+    static ArrayList<String> listKeysComment;
     static long currentTopicId;
     static String nickName="User";
     static int iconId=0;

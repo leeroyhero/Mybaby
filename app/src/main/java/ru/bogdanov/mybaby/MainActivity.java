@@ -18,6 +18,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import ru.bogdanov.mybaby.Chat.Chat;
@@ -52,6 +55,15 @@ public class MainActivity extends AppCompatActivity
 
         ImageView imageView=(ImageView) findViewById(R.id.imageViewBackground);
         imageView.setImageResource(R.drawable.gradient1);
+
+        addAd();
+    }
+
+    private void addAd() {
+        MobileAds.initialize(getApplicationContext(), "ca-app-pub-6667638133499349~8773289711");
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     public void sendToMe(){
