@@ -124,6 +124,17 @@ ForumTopic forumTopic;
                 calendar.setTimeInMillis(fc.getmDate());
                 String date=dateFormat.format(calendar.getTime());
                 textviewDate.setText(date);
+                    if (ForumStorage.isAdmin())
+                        view.setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View view) {
+                                TextView textviewText=(TextView) view.findViewById(R.id.textViewCommentText);
+                                String text=textviewText.getText().toString();
+                                firebase.deleteComment(text);
+                                Toast.makeText(getActivity(),"Comment deleted = "+text,Toast.LENGTH_SHORT).show();
+                                return true;
+                            }
+                        });
 
                 contentLL.addView(view);}
             }

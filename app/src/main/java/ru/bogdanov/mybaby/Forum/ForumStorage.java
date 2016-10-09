@@ -11,6 +11,11 @@ import ru.bogdanov.mybaby.Forum.ForumItems.ForumTopic;
 public class ForumStorage {
    static ArrayList<ForumTopic> listTopic;
    static ArrayList<ForumComment> listComment;
+    static private boolean admin=false;
+
+    public static boolean isAdmin() {
+        return admin;
+    }
 
 
     public static ArrayList<String> getListKeysComment() {
@@ -22,6 +27,16 @@ public class ForumStorage {
     }
 
     static ArrayList<String> listKeysComment;
+
+    public static ArrayList<String> getListKeysTopic() {
+        return listKeysTopic;
+    }
+
+    public static void setListKeysTopic(ArrayList<String> listKeysTopic) {
+        ForumStorage.listKeysTopic = listKeysTopic;
+    }
+
+    static ArrayList<String> listKeysTopic;
     static long currentTopicId;
     static String nickName="User";
     static int iconId=0;

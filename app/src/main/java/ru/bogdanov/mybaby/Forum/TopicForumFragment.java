@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -221,6 +223,21 @@ FireBase fireBase;
                             boom();
                         }
                     });
+                    if (ForumStorage.isAdmin())
+                        view.setOnLongClickListener(new View.OnLongClickListener() {
+                            @Override
+                            public boolean onLongClick(View view) {
+                                TextView textviewTopic=(TextView) view.findViewById(R.id.textViewTopic);
+                                TextView textviewNickname=(TextView) view.findViewById(R.id.textViewNickNameTopic);
+                                String topicName=textviewTopic.getText().toString();
+                                String userName=textviewNickname.getText().toString();
+                                fireBase.deletePostAndComments(topicName, userName);
+                                Toast.makeText(getActivity(),"Topic deleted",Toast.LENGTH_SHORT).show();
+                                return true;
+                            }
+                        });
+                    Animation anim= AnimationUtils.loadAnimation(getActivity(),R.anim.alpha);
+                    view.startAnimation(anim);
                     contentLayout.addView(view);
                 }
                 if (getActivity()!=null)

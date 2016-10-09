@@ -25,26 +25,6 @@ public class FireBase {
         Log.i(LOG,"Firebase started");
     }
 
-    public void deleteComments(String s){
-        mDatabase.child("forum").child(s).removeValue();
-        for (ForumComment fc:ForumStorage.getListComment()) {
-            if (s.equals(fc.getmTopicId())) {
-                int position=ForumStorage.getListComment().indexOf(fc);
-                mDatabase.child("comments").child(ForumStorage.getListKeysComment().get(position)).removeValue();
-            }
-        }
-
-    }
-
-    public void deletePostAndComments(){
-        long id=ForumStorage.getListTopic().get(0).getmDate();
-        int ic=ForumStorage.getListTopic().get(0).getmIcon_id();
-        mDatabase.child("forum").child(id+" "+ic).removeValue();
-        ArrayList<ForumComment> list=new ArrayList<>(ForumStorage.getListComment());
-        for (ForumComment fc:list) {
-            if (id==fc.getmTopicId()) mDatabase.child("comments").child(fc.getmDate()+" "+fc.getmIconId()).removeValue();
-        }
-    }
 
     public void newForumTopic(ForumTopic forumTopic){
         mDatabase.child("forum").push().setValue(forumTopic);
@@ -101,12 +81,14 @@ public class FireBase {
 
     public void getForumTopics(){
         final ArrayList<ForumTopic> listTopic=new ArrayList<>();
+        final  ArrayList<String> listKeysTopic=new ArrayList<>();
         mDatabase.child("forum").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 ForumTopic forumTopic = dataSnapshot.getValue(ForumTopic.class);
                 Log.i(LOG,forumTopic.getmNickname()+" "+forumTopic.getmDate()+" "+forumTopic.getmTopic());
                 listTopic.add(forumTopic);
+                listKeysTopic.add(dataSnapshot.getKey());
             }
 
             @Override
@@ -130,6 +112,44 @@ public class FireBase {
             }
         });
         ForumStorage.setListTopic(listTopic);
+        ForumStorage.setListKeysTopic(listKeysTopic);
 
+    }
+
+    public void deletePostAndComments(String topicName, String userName) {
+        for (ForumTopic ft: ForumStorage.getListTopic()) {
+            if (ft.getmNickname().equals(userName))
+                if (ft.getmTopic().equals(topicName)){
+                    int pos=ForumStorage.getListTopic().indexOf(ft);
+                    String deleteTopicKeys=ForumStorage.getListKeysTopic().get(pos);
+                    deletePost(deleteTopicKeys);
+                    deleteComments(ft.getmDate());
+                    Log.i(LOG, "Topic deleted = "+topicName);
+                }
+        }
+    }
+
+    private void deleteComments(long l) {
+        for (ForumComment fc:ForumStorage.getListComment()) {
+            if (fc.getmTopicId()==l){
+                int pos=ForumStorage.getListComment().indexOf(fc);
+                String key=ForumStorage.getListKeysComment().get(pos);
+                mDatabase.child("comments").child(key).removeValue();
+            }
+        }
+    }
+
+    public void deleteComment(String text) {
+        for (ForumComment fc:ForumStorage.getListComment()) {
+            if (fc.getmText()==text){
+                int pos=ForumStorage.getListComment().indexOf(fc);
+                String key=ForumStorage.getListKeysComment().get(pos);
+                mDatabase.child("comments").child(key).removeValue();
+            }
+        }
+    }
+
+    private void deletePost(String deleteTopicKeys) {
+        mDatabase.child("forum").child(deleteTopicKeys).removeValue();
     }
 }
