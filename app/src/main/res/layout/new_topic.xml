@@ -52,12 +52,12 @@
             android:textColorHint="@color/textPrimary"/>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Создать"
             android:id="@+id/buttonNewTopic"
             android:layout_margin="4dp"
-            android:background="@drawable/multibutton"
+            android:background="@drawable/item_back"
             android:layout_marginBottom="8dp"
             android:textColor="@color/textPrimary" />
     </LinearLayout>

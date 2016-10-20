@@ -26,7 +26,7 @@ import ru.bogdanov.mybaby.R;
  * A simple {@link Fragment} subclass.
  */
 public class CommentForumFragment extends Fragment implements View.OnClickListener {
-ForumTopic forumTopic;
+    ForumTopic forumTopic;
     DateFormat dateFormat;
     Button buttonAdd;
     FireBase firebase;
@@ -49,27 +49,27 @@ ForumTopic forumTopic;
 
         dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         fillTopView();
-        buttonAdd=(Button) getActivity().findViewById(R.id.buttonCommentAdd);
+        buttonAdd = (Button) getActivity().findViewById(R.id.buttonCommentAdd);
         buttonAdd.setOnClickListener(this);
-        firebase=new FireBase();
+        firebase = new FireBase();
         new AsyncComment().execute();
 
     }
 
     private void fillTopView() {
-        for (ForumTopic ft:ForumStorage.getListTopic())
-            if (ft.getmDate()==ForumStorage.getCurrentTopicId()){
-                forumTopic=ft;
+        for (ForumTopic ft : ForumStorage.getListTopic())
+            if (ft.getmDate() == ForumStorage.getCurrentTopicId()) {
+                forumTopic = ft;
                 break;
             }
-        TextView textViewTopText=(TextView) getActivity().findViewById(R.id.textViewTopicText);
-        TextView textViewTopTitle=(TextView) getActivity().findViewById(R.id.textViewTopicTitle);
-        TextView textViewTopDate=(TextView) getActivity().findViewById(R.id.textViewTopicDate);
-        TextView textViewTopName=(TextView) getActivity().findViewById(R.id.textViewTopicName);
+        TextView textViewTopText = (TextView) getActivity().findViewById(R.id.textViewTopicText);
+        TextView textViewTopTitle = (TextView) getActivity().findViewById(R.id.textViewTopicTitle);
+        TextView textViewTopDate = (TextView) getActivity().findViewById(R.id.textViewTopicDate);
+        TextView textViewTopName = (TextView) getActivity().findViewById(R.id.textViewTopicName);
         textViewTopText.setText(forumTopic.getmText());
-        Calendar calendar=Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(forumTopic.getmDate());
-        String date=dateFormat.format(calendar.getTime());
+        String date = dateFormat.format(calendar.getTime());
         textViewTopDate.setText(date);
         textViewTopTitle.setText(forumTopic.getmTopic());
         textViewTopName.setText(forumTopic.getmNickname());
@@ -77,32 +77,37 @@ ForumTopic forumTopic;
 
     @Override
     public void onClick(View view) {
-        int id=view.getId();
-        if (id==R.id.buttonCommentAdd) addComment();
+        int id = view.getId();
+        if (id == R.id.buttonCommentAdd) addComment();
     }
 
     private void addComment() {
-        EditText editText=(EditText) getActivity().findViewById(R.id.editTextCommentAdd);
-        String text=editText.getText().toString();
-        text=text.replaceAll("\n"," ");
-        text=text.trim();
-        if (text.isEmpty()) Toast.makeText(getActivity(),"Введите сообщение",Toast.LENGTH_SHORT).show();
+        EditText editText = (EditText) getActivity().findViewById(R.id.editTextCommentAdd);
+        String text = editText.getText().toString();
+        text = text.replaceAll("\n", " ");
+        text = text.trim();
+        if (text.isEmpty())
+            Toast.makeText(getActivity(), "Введите сообщение", Toast.LENGTH_SHORT).show();
         else {
-            ForumComment forumComment=new ForumComment(ForumStorage.currentTopicId,ForumStorage.nickName,text, 0);
-            firebase.newForumComment(forumComment);
+            ForumComment forumComment = new ForumComment(ForumStorage.currentTopicId, ForumStorage.nickName, text, 0);
+            if (ForumStorage.isBanned())
+                Toast.makeText(getActivity(), "Вы забанены", Toast.LENGTH_LONG).show();
+            else firebase.newForumComment(forumComment);
             editText.setText("");
             new AsyncComment().execute();
         }
 
     }
 
-    class AsyncComment extends AsyncTask<Void,Void,Void> {
+    class AsyncComment extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... voids) {
             firebase.getForumComments();
-            while (ForumStorage.getListComment()==null){}
-            while (ForumStorage.getListComment().size()==0){}
+            while (ForumStorage.getListComment() == null) {
+            }
+            while (ForumStorage.getListComment().size() == 0) {
+            }
 
             return null;
         }
@@ -110,39 +115,40 @@ ForumTopic forumTopic;
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            LinearLayout contentLL=(LinearLayout) getActivity().findViewById(R.id.comment_content_ll);
+            LinearLayout contentLL = (LinearLayout) getActivity().findViewById(R.id.comment_content_ll);
             contentLL.removeAllViews();
-            for (ForumComment fc:ForumStorage.getListComment()) {
-                if (fc.getmTopicId()==ForumStorage.getCurrentTopicId()){
-                View view=View.inflate(getActivity(),R.layout.comment_item,null);
-                TextView textviewNick=(TextView) view.findViewById(R.id.textViewCommentNickname);
-                TextView textviewDate=(TextView) view.findViewById(R.id.textViewCommentDate);
-                TextView textviewText=(TextView) view.findViewById(R.id.textViewCommentText);
-                textviewNick.setText(fc.getmNickName());
-                textviewText.setText(fc.getmText());
-                Calendar calendar=Calendar.getInstance();
-                calendar.setTimeInMillis(fc.getmDate());
-                String date=dateFormat.format(calendar.getTime());
-                textviewDate.setText(date);
+            for (ForumComment fc : ForumStorage.getListComment()) {
+                if (fc.getmTopicId() == ForumStorage.getCurrentTopicId()) {
+                    View view = View.inflate(getActivity(), R.layout.comment_item, null);
+                    TextView textviewNick = (TextView) view.findViewById(R.id.textViewCommentNickname);
+                    TextView textviewDate = (TextView) view.findViewById(R.id.textViewCommentDate);
+                    TextView textviewText = (TextView) view.findViewById(R.id.textViewCommentText);
+                    textviewNick.setText(fc.getmNickName());
+                    textviewText.setText(fc.getmText());
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(fc.getmDate());
+                    String date = dateFormat.format(calendar.getTime());
+                    textviewDate.setText(date);
                     if (ForumStorage.isAdmin())
                         view.setOnLongClickListener(new View.OnLongClickListener() {
                             @Override
                             public boolean onLongClick(View view) {
-                                TextView textviewText=(TextView) view.findViewById(R.id.textViewCommentText);
-                                String text=textviewText.getText().toString();
+                                TextView textviewText = (TextView) view.findViewById(R.id.textViewCommentText);
+                                String text = textviewText.getText().toString();
                                 firebase.deleteComment(text);
-                                Toast.makeText(getActivity(),"Comment deleted = "+text,Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Comment deleted = " + text, Toast.LENGTH_SHORT).show();
                                 return true;
                             }
                         });
 
-                contentLL.addView(view);}
+                    contentLL.addView(view);
+                }
             }
-            final ScrollView scrollView=(ScrollView) getActivity().findViewById(R.id.scrollViewCommentForum);
+            final ScrollView scrollView = (ScrollView) getActivity().findViewById(R.id.scrollViewCommentForum);
             scrollView.post(new Runnable() {
                 @Override
                 public void run() {
-                    if (scrollView!=null)
+                    if (scrollView != null)
                         scrollView.fullScroll(View.FOCUS_DOWN);
                 }
             });

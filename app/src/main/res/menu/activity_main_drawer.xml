@@ -20,9 +20,17 @@
     <item android:title="Настройки">
         <menu>
             <item
-                android:id="@+id/nav_send_to_me"
-                android:icon="@drawable/ic_message_black_24dp"
-                android:title="Написать разработчику" />
+            android:id="@+id/nav_send_to_me"
+            android:icon="@drawable/ic_message_black_24dp"
+            android:title="Написать разработчику" />
+            <item
+                android:id="@+id/nav_change_name"
+                android:icon="@drawable/ic_face_black_24dp"
+                android:title="Изменить имя" />
+            <item
+                android:id="@+id/nav_rules"
+                android:icon="@drawable/ic_error_black_24dp"
+                android:title="Правила" />
         </menu>
     </item>
 

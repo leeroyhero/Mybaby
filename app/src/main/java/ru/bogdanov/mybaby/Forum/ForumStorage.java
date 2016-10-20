@@ -13,6 +13,7 @@ public class ForumStorage {
    static ArrayList<ForumComment> listComment;
     static private boolean admin=false;
     private static String userID;
+    private static boolean banned=false;
 
     public static boolean isAdmin() {
         return admin;
@@ -98,5 +99,13 @@ public class ForumStorage {
 
     public static void setUserID(String userId) {
         userID = userId;
+    }
+
+    public static boolean isBanned() {
+        return banned;
+    }
+
+    public static void setBanned() {
+        banned = true;
     }
 }

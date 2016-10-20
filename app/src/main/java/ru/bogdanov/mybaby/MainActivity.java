@@ -1,6 +1,7 @@
 package ru.bogdanov.mybaby;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity
 
         addAd();
         ForumStorage.setUserID(new SharedPref(this).getUserID());
+        new FireBase().setBanned();
     }
 
     private void addAd() {
@@ -119,11 +121,35 @@ public class MainActivity extends AppCompatActivity
             startFragment(new Chat());
         } else if (id == R.id.nav_send_to_me) {
             sendToMe();
+        }else if (id == R.id.nav_change_name) {
+            changeName();
+        }else if (id == R.id.nav_rules) {
+            showRules();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void showRules() {
+        new AlertDialog.Builder(this)
+                .setTitle("Правила")
+                .setMessage("Спасибо за использование нашего приложения!\n" +
+                        "\n" +
+                        "Запрещено:\n" +
+                        "- Реклама в любом виде, не согласованная с создателями приложения. Для ваших предложений воспользуйтесь *Написать разработчику*, или на почту leeroy-eve@mail.ru;\n" +
+                        "- Неадвекатное поведение или грубое оскорбление пользователей;\n" +
+                        "- Попытки *троллинга*;\n" +
+                        "- Использование внешних ссылок, которые могут нанести вред пользователям или относятся к пунктам выше.\n" )
+                .setPositiveButton("Принято", null)
+                .show();
+    }
+
+    private void changeName() {
+        Intent intent=new Intent(this, WelcomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public void startFragment(Fragment fragment){

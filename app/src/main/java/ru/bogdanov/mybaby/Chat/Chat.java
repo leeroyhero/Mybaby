@@ -28,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import ru.bogdanov.mybaby.Forum.ForumStorage;
 import ru.bogdanov.mybaby.R;
 import ru.bogdanov.mybaby.SharedPref;
 
@@ -36,10 +37,10 @@ import ru.bogdanov.mybaby.SharedPref;
  * A simple {@link Fragment} subclass.
  */
 public class Chat extends Fragment implements View.OnClickListener {
-private String mChatName="Боец";
-private int mChatIcon=0;
-    String LOG="firebase_log";
-    private final String CHILD="chat";
+    private String mChatName = "Боец";
+    private int mChatIcon = 0;
+    String LOG = "firebase_log";
+    private final String CHILD = "chat";
     EditText editTextPostText;
     private DatabaseReference mDatabase;
     ScrollView scrollView;
@@ -68,15 +69,15 @@ private int mChatIcon=0;
     @Override
     public void onStart() {
         dateFormat = new SimpleDateFormat("HH:mm");
-        context=getActivity();
-        userPostArrayList=new ArrayList<>();
-        ll=(LinearLayout) getActivity().findViewById(R.id.chatContentLayout);
+        context = getActivity();
+        userPostArrayList = new ArrayList<>();
+        ll = (LinearLayout) getActivity().findViewById(R.id.chatContentLayout);
         ll.removeAllViews();
-        scrollView=(ScrollView) getActivity().findViewById(R.id.scrollView3);
-        mChatName=getChatName();
-        button=(ImageButton) getActivity().findViewById(R.id.buttonChat);
+        scrollView = (ScrollView) getActivity().findViewById(R.id.scrollView3);
+        mChatName = getChatName();
+        button = (ImageButton) getActivity().findViewById(R.id.buttonChat);
         button.setOnClickListener(this);
-        editTextPostText=(EditText) getActivity().findViewById(R.id.editTextPostText);
+        editTextPostText = (EditText) getActivity().findViewById(R.id.editTextPostText);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         getActivity().setTitle("Чат");
         super.onStart();
@@ -86,7 +87,7 @@ private int mChatIcon=0;
     public void onResume() {
         super.onResume();
 
-        childEventListener=new ChildEventListener() {
+        childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 dataChanged(dataSnapshot);
@@ -109,8 +110,8 @@ private int mChatIcon=0;
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(getActivity(),"Проблема с подключением к чату",Toast.LENGTH_SHORT).show();
-                Log.i(LOG,databaseError.getMessage());
+                Toast.makeText(getActivity(), "Проблема с подключением к чату", Toast.LENGTH_SHORT).show();
+                Log.i(LOG, databaseError.getMessage());
             }
         };
 
@@ -119,12 +120,12 @@ private int mChatIcon=0;
     }
 
     private void dataChanged(DataSnapshot dataSnapshot) {
-        UserPost up1=dataSnapshot.getValue(UserPost.class);
+        UserPost up1 = dataSnapshot.getValue(UserPost.class);
 
-        if (up1!=null) {
+        if (up1 != null) {
             Calendar calendar = Calendar.getInstance();
-            String s=up1.getTimeMillis();
-            long l=Long.valueOf(s);
+            String s = up1.getTimeMillis();
+            long l = Long.valueOf(s);
             calendar.setTimeInMillis(l);
             String d = dateFormat.format(calendar.getTime());
             up1.setTime(d);
@@ -136,23 +137,23 @@ private int mChatIcon=0;
     }
 
     private void addToChat(UserPost up1) {
-        View view=View.inflate(context,R.layout.chat_item,null);
-        TextView textview=(TextView) view.findViewById(R.id.textViewItemChat);
-        TextView textviewText=(TextView) view.findViewById(R.id.textViewItemChatText);
-        TextView textviewTime=(TextView) view.findViewById(R.id.textViewChatTime);
-        textview.setText(up1.getName()+":");
+        View view = View.inflate(context, R.layout.chat_item, null);
+        TextView textview = (TextView) view.findViewById(R.id.textViewItemChat);
+        TextView textviewText = (TextView) view.findViewById(R.id.textViewItemChatText);
+        TextView textviewTime = (TextView) view.findViewById(R.id.textViewChatTime);
+        textview.setText(up1.getName() + ":");
         textviewTime.setText(up1.getTime());
 
-        ImageView imageViewChatIcon=(ImageView) view.findViewById(R.id.imageViewChatIcon);
+        ImageView imageViewChatIcon = (ImageView) view.findViewById(R.id.imageViewChatIcon);
 
-        imageViewChatIcon.setImageResource(context.getResources().getIdentifier("chat_icon"+up1.getIconId(),"drawable",context.getPackageName()));
+        imageViewChatIcon.setImageResource(context.getResources().getIdentifier("chat_icon" + up1.getIconId(), "drawable", context.getPackageName()));
         textviewText.setText(up1.getText());
         ll.addView(view);
         scrollView.post(new Runnable() {
             @Override
             public void run() {
-                if (scrollView!=null)
-                scrollView.fullScroll(View.FOCUS_DOWN);
+                if (scrollView != null)
+                    scrollView.fullScroll(View.FOCUS_DOWN);
             }
         });
     }
@@ -169,14 +170,14 @@ private int mChatIcon=0;
     }
 
 
-    public String getChatName(){
+    public String getChatName() {
         return new SharedPref(getActivity()).getName();
     }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.buttonChat:
                 sendMessage();
                 break;
@@ -186,21 +187,22 @@ private int mChatIcon=0;
 
     private void sendMessage() {
 
-        String postText=editTextPostText.getText().toString();
+        String postText = editTextPostText.getText().toString();
         if (postText.equals(""))
-            Toast.makeText(getActivity(),"Введите сообщение",Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), "Введите сообщение", Toast.LENGTH_LONG).show();
         else {
-            mChatName=mChatName.replaceAll("\n"," ");
-            postText=postText.replaceAll("\n"," ");
-            postText=postText.trim();
+            mChatName = mChatName.replaceAll("\n", " ");
+            postText = postText.replaceAll("\n", " ");
+            postText = postText.trim();
 
             UserPost userPost = new UserPost(mChatName, postText, mChatIcon);
-
-            mDatabase.child(CHILD).push().setValue(userPost);
+            if (ForumStorage.isBanned())
+                Toast.makeText(getActivity(), "Вы забанены", Toast.LENGTH_LONG).show();
+            else mDatabase.child(CHILD).push().setValue(userPost);
 
             editTextPostText.setText("");
         }
-         if (userPostArrayList.size()>30) deleteLastMessage();
+        if (userPostArrayList.size() > 30) deleteLastMessage();
     }
 
     private void deleteLastMessage() {

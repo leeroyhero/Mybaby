@@ -1,7 +1,6 @@
 package ru.bogdanov.mybaby.Forum;
 
 
-import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -40,7 +39,7 @@ FireBase fireBase;
     ArrayList<ForumTopic> listTopic;
     DateFormat dateFormat;
     Calendar itemCalendar;
-    Button buttonToppicAdd, buttonSettings, buttonRefresh;
+    Button buttonToppicAdd, buttonRefresh;
     AlertDialog alertDialog;
     EditText editTextTopic, editTextText;
     ProgressBar progressBar;
@@ -68,45 +67,13 @@ FireBase fireBase;
         dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         itemCalendar=Calendar.getInstance();
         buttonToppicAdd=(Button) getActivity().findViewById(R.id.buttonTopicAdd);
-        buttonSettings=(Button) getActivity().findViewById(R.id.buttonSettings);
         buttonRefresh=(Button) getActivity().findViewById(R.id.buttonRefresh);
         buttonToppicAdd.setOnClickListener(this);
-        buttonSettings.setOnClickListener(this);
         buttonRefresh.setOnClickListener(this);
     }
 
     private void getName() {
         ForumStorage.setNickName(new SharedPref(getActivity()).getName());
-        if (ForumStorage.getNickName().equals("User")){
-            newName();
-        }
-
-
-    }
-
-    private void newName(){
-        View view=View.inflate(getActivity(),R.layout.forum_settings,null);
-        final EditText editText=(EditText) view.findViewById(R.id.editTextForumSettings);
-        AlertDialog alertDialog=new AlertDialog.Builder(getActivity())
-                .setView(view)
-                .setCancelable(false)
-                .setPositiveButton("Принять", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        String text=editText.getText().toString();
-                        text=text.trim();
-                        if (text.isEmpty()) {
-                            Toast.makeText(getActivity(), "Введите имя", Toast.LENGTH_SHORT).show();
-                            getName();
-                        } else {
-                            new SharedPref(getActivity()).saveName(text);
-                            ForumStorage.setNickName(text);
-                        }
-                    }
-                })
-                .show();
-        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.gradient1);
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.textPrimary));
     }
 
     @Override
@@ -115,25 +82,11 @@ FireBase fireBase;
         if (id==R.id.buttonTopicAdd) topicAdd();
 
         if (id==R.id.buttonNewTopic) newTopic();
-        if (id==R.id.buttonSettings) newName();
 
         if (id==R.id.buttonRefresh) {
             new FillTask().execute();
             Toast.makeText(getActivity(),"Страница обновлена",Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void bitch() {
-        FireBase fireBase=new FireBase();
-        for (int i=0;i<1000;i++){
-            ForumTopic forumTopic = new ForumTopic(ForumStorage.getNickName(), "Комментарий "+i*10, "Тема "+i, ForumStorage.getIconId());
-            fireBase.newForumTopic(forumTopic);
-            for (int j=0;j<5;j++){
-                ForumComment forumComment=new ForumComment(forumTopic.getmDate(),ForumStorage.nickName,"Комментарий "+j, 0);
-                fireBase.newForumComment(forumComment);
-            }
-        }
-        new FillTask().execute();
     }
 
     private void newTopic() {
@@ -147,8 +100,10 @@ FireBase fireBase;
             Toast.makeText(getActivity(),"Введите текст",Toast.LENGTH_SHORT).show();
         else {
             ForumTopic forumTopic = new ForumTopic(ForumStorage.getNickName(), text, topic, ForumStorage.getIconId());
+            if (ForumStorage.isBanned())
+                Toast.makeText(getActivity(), "Вы забанены", Toast.LENGTH_LONG).show();
+            else fireBase.newForumTopic(forumTopic);
 
-            fireBase.newForumTopic(forumTopic);
             new FillTask().execute();
             alertDialog.cancel();
         }
