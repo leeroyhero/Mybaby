@@ -10,6 +10,6 @@
     <dimen name="item_height">86dp</dimen>
     <dimen name="textPrimary">22sp</dimen>
     <dimen name="textSecondary">16sp</dimen>
-<dimen name="radius">3dp</dimen>
+    <dimen name="radius">3dp</dimen>
     <dimen name="chat_text_size">16dp</dimen>
 </resources>

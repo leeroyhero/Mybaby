@@ -6,6 +6,7 @@
 
     <color name="transparent">#47641120</color>
     <color name="textPrimary">#ffffff</color>
+    <color name="textWhiteTransparent">#b8ffffff</color>
     <color name="textSecondary">#fff</color>
     <color name="line">#3affffff</color>
 </resources>

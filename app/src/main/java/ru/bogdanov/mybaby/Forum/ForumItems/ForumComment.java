@@ -3,10 +3,13 @@ package ru.bogdanov.mybaby.Forum.ForumItems;
 import java.util.Calendar;
 import java.util.Locale;
 
+import ru.bogdanov.mybaby.Forum.ForumStorage;
+
 /**
  * Created by Владимир on 23.08.2016.
  */
 public class ForumComment {
+    private String userID;
     private long mTopicId;
     private long mDate;
     private String mNickName;
@@ -63,5 +66,14 @@ public class ForumComment {
         this.mNickName = mNickName;
         this.mText = mText;
         this.mTopicId = mTopicId;
+        this.userID= ForumStorage.getUserID();
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 }

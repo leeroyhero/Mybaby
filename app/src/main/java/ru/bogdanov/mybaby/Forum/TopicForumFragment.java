@@ -80,6 +80,8 @@ FireBase fireBase;
         if (ForumStorage.getNickName().equals("User")){
             newName();
         }
+
+
     }
 
     private void newName(){

@@ -12,9 +12,14 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPref sharedPref=new SharedPref(this);
 
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent;
+        if (sharedPref.isNameSaved())
+        intent = new Intent(this, MainActivity.class);
+        else intent = new Intent(this, WelcomeActivity.class);
         startActivity(intent);
+
         finish();
     }
 }

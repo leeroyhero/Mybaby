@@ -25,6 +25,7 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 
 import ru.bogdanov.mybaby.Chat.Chat;
 import ru.bogdanov.mybaby.Forum.FireBase;
+import ru.bogdanov.mybaby.Forum.ForumStorage;
 import ru.bogdanov.mybaby.Forum.TopicForumFragment;
 import ru.bogdanov.mybaby.HintFragments.HeaderFragment;
 
@@ -32,6 +33,7 @@ import ru.bogdanov.mybaby.HintFragments.HeaderFragment;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private FirebaseAnalytics mFirebaseAnalytics;
+    private final String LOG="main_log";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity
         imageView.setImageResource(R.drawable.gradient1);
 
         addAd();
+        ForumStorage.setUserID(new SharedPref(this).getUserID());
     }
 
     private void addAd() {
@@ -129,5 +132,6 @@ public class MainActivity extends AppCompatActivity
         fragmentTransaction.replace(R.id.content_fragment_layout,fragment);
         fragmentTransaction.commit();
     }
+
 
 }

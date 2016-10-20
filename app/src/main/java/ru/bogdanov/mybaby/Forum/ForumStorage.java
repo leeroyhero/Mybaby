@@ -12,6 +12,7 @@ public class ForumStorage {
    static ArrayList<ForumTopic> listTopic;
    static ArrayList<ForumComment> listComment;
     static private boolean admin=false;
+    private static String userID;
 
     public static boolean isAdmin() {
         return admin;
@@ -89,5 +90,13 @@ public class ForumStorage {
 
     public static void setListTopic(ArrayList<ForumTopic> listTopic) {
         ForumStorage.listTopic = listTopic;
+    }
+
+    public static String getUserID() {
+        return userID;
+    }
+
+    public static void setUserID(String userId) {
+        userID = userId;
     }
 }

@@ -3,6 +3,8 @@ package ru.bogdanov.mybaby.Forum.ForumItems;
 import java.util.Calendar;
 import java.util.Locale;
 
+import ru.bogdanov.mybaby.Forum.ForumStorage;
+
 /**
  * Created by Владимир on 23.08.2016.
  */
@@ -13,6 +15,7 @@ public class ForumTopic {
     private long mDate;
     private int mIcon_id;
     private String mSection;
+    private String userID;
 
     public String getmSection() {
         return mSection;
@@ -75,6 +78,15 @@ public class ForumTopic {
         Calendar calendar=Calendar.getInstance(Locale.ENGLISH);
         this.mDate = calendar.getTimeInMillis();
         this.mSection="common";
+        this.userID= ForumStorage.getUserID();
 
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 }
